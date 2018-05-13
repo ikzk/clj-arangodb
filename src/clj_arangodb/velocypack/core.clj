@@ -106,7 +106,7 @@
 (declare build-array)
 
 (defn pack-one [x]
-  (-> (new VPackBuilder)
+  (-> (new-vpack-builder)
       (.add ValueType/ARRAY)
       (.add x)
       .close
@@ -115,10 +115,10 @@
 
 (defn pack [xs]
   (cond (map? xs)
-        (.slice (build-map (-> (new VPackBuilder) (.add ValueType/OBJECT)) xs))
+        (.slice (build-map (-> (new-vpack-builder) (.add ValueType/OBJECT)) xs))
         ((some-fn string? number? nil?) xs) (pack-one xs)
         (seqable? xs)
-        (.slice (build-array (-> (new VPackBuilder) (.add ValueType/ARRAY)) xs))
+        (.slice (build-array (-> (new-vpack-builder) (.add ValueType/ARRAY)) xs))
         :else (pack-one xs)))
 
 (defn build-array [builder seq]
